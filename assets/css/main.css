@@ -1,0 +1,44 @@
+
+    .navbar {
+        display: flex;
+        gap: 1em;
+        background-color: teal;
+    }
+    .navbar a{
+        font-family: sans-serif;
+        font-weight: 500;
+        color: white;
+        text-decoration: none;
+        padding: 1rem;
+    }
+    .navbar a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .footer {
+        font-family: sans-serif;
+        background-color: whitesmoke;
+        padding: 1em;
+        text-align: center;
+        border-top: 1px solid lightgrey;
+    }
+    
+    .article {
+        max-width: 740px;
+        margin: 4em auto;
+        padding: 0 2em;
+      }
+      
+      .article .post-title {
+        font-weight: bolder;
+        font-family: sans;
+      }
+      
+      .article .post-meta {
+        margin: 1em 0;
+        font-size: 0.8rem;
+        font-family: sans;
+        color: grey;
+      }
+      .article .post-body {
+        line-height: 1.6rem;
+      }
