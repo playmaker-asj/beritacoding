@@ -2,77 +2,101 @@
 
 class Post extends CI_Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('article_model');
-    }
-    public function index()
-    {
-        $data['articles'] = $this->article_model->get();
-        $this->load->view('admin/post_list.php', $data);
-    }
-    public function new()
-    {
-        if($this->input->method()=== 'post'){
-            //TODO: lakukan validasi sebelum menyimpan ke model
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('article_model');
+	}
 
-            //generate unique id and slug
-            $id = uniqid('',true);
-            $slug = url_title($this->input->post('title'),'dash',TRUE).'-'.$id;
+	public function index()
+	{
+		$data['articles'] = $this->article_model->get();
+		if(count($data['articles']) <=0){
+			$this->load->view('admin/post_empty.php');
+		}else{
+			$this->load->view('admin/post_list.php',$data);
+		}
+	}
 
-            $article = [
-                'id' => $id,
-                'title'=>$this->input->post('title'),
-                'slug'=>$slug,
-                'content'=>$this->input->post('content'),
-                'draft'=>$this->input->post('draft')
-            ];
+	public function new()
+	{	
+		$this->load->library('form_validation');
+		if ($this->input->method() === 'post') {
+			// TODO: Lakukan validasi sebelum menyimpan ke model
+			$rules = $this->article_model->rules();
+			$this->form_validation->set_rules($rules);
 
-            $saved = $this->article_model->insert($article);
-            if($saved) {
-                $this->session->set_flashdata('message','Article was created');
-                return redirect('admin/post');
-            }
-        }
-        $this->load->view('admin/post_new_form.php');
-    }
+			if($this->form_validation->run()=== FALSE){
+				return $this->load->view('admin/post_new_form.php');
+			}
+			// generate unique id and slug
+			$id = uniqid('', true);
+			$slug = url_title($this->input->post('title'), 'dash', TRUE) . '-' . $id;
 
-    public function edit($id = null)
-    {
-        $data['article'] = $this->article_model->find($id);
+			$article = [
+				'id' => $id,
+				'title' => $this->input->post('title'),
+				'slug' => $slug,
+				'content' => $this->input->post('content'),
+				'draft' => $this->input->post('draft')
+			];
 
-        if(!$data ['article'] || !$id) {
-            show_404();
-        }
+			$saved = $this->article_model->insert($article);
 
-        if($this->input->method()==='post'){
-            //TODO: lakukan validasi data sebelum simpan ke model
-            $article=[
-                'id' =>$id,
-                'title'=>$this->input->post('title'),
-                'content'=>$this->input->post('content'),
-                'draft'=>$this->input->post('draft')
+			if ($saved) {
+				$this->session->set_flashdata('message', 'Article was created');
+				return redirect('admin/post');
+			}
+		}
 
-            ];
-            $updated = $this->article_model->update($article);
-            if ($updated) {
-                $this->session->set_flashdata('message','Article was updated');
-                redirect('admin/post');
-            }
-        }
+		$this->load->view('admin/post_new_form.php');
+	}
 
-        $this->load->view('admin/post_edit_form.php', $data);
-    }
-    public function delete($id = null)
-    {
-        if (!$id){
-            show_404();
-        }
-        $deleted = $this->article_model->delete($id);
-        if ($deleted) {
-            $this->session->set_flashdata('message', 'Article was deleted');
-            redirect('admin/post');
-        }
-    }
+	public function edit($id = null)
+	{
+		$data['article'] = $this->article_model->find($id);
+		$this->load->library('form_validation');
+	
+		if (!$data['article'] || !$id) {
+			show_404();
+		}
+
+		if ($this->input->method() === 'post') {
+			// TODO: lakukan validasi data seblum simpan ke model
+			$rules = $this->article_model->rules();
+			$this->form_validation->set_rules($rules);
+
+			if($this->form_validation->run()=== FALSE){
+				return $this->load->view('admin/post_edit_form.php', $data);
+				
+			}
+			
+			$article = [
+				'id' => $id,
+				'title' => $this->input->post('title'),
+				'content' => $this->input->post('content'),
+				'draft' => $this->input->post('draft')
+			];
+			$updated = $this->article_model->update($article);
+			if ($updated) {
+				$this->session->set_flashdata('message', 'Article was updated');
+				redirect('admin/post');
+			}
+		}
+
+		$this->load->view('admin/post_edit_form.php', $data);
+	}
+
+	public function delete($id = null)
+	{
+		if (!$id) {
+			show_404();
+		}
+
+		$deleted = $this->article_model->delete($id);
+		if ($deleted) {
+			$this->session->set_flashdata('message', 'Article was deleted');
+			redirect('admin/post');
+		}
+	}
 }

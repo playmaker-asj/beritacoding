@@ -3,7 +3,7 @@
 <head>
     
     <?php $this->load->view('_partials/head.php');?>
-    <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>"/>
+    
 </head>
 <body>
 <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>"/>
