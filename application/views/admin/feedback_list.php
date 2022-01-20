@@ -12,7 +12,7 @@
 		<div class="content">
 			<h1>Feedback</h1>
 
-			<?php foreach($feedback as $feedback): ?>
+			<?php foreach($feedbacks as $feedback): ?>
 			<div class="card">
 				<div class="card-header">
 					<div>
