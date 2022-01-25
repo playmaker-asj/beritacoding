@@ -85,13 +85,15 @@ label {
 	display: inline-block;
 	margin-bottom: 0.5rem;
 }
-input, textarea {
+input,
+textarea {
 	display: inline-block;
 	padding: 0.5rem;
 	margin-bottom: 1rem;
 	width: 100%;
 }
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
 	outline-color: dodgerblue;
 }
 
@@ -167,16 +169,18 @@ form {
 	gap: 1rem;
 	padding: 2rem 0;
 }
-label{
+label {
 	display: inline-block;
 	margin-bottom: 0.5rem;
 }
-input, textarea{
+input,
+textarea {
 	display: inline-block;
 	padding: 0.5rem;
 	width: 100%;
 }
-input:focus,textarea:focus{
+input:focus,
+textarea:focus {
 	outline-color: dodgerblue;
 }
 
@@ -187,10 +191,10 @@ input:focus,textarea:focus{
 .invalid::placeholder {
 	color: rgb(153, 16, 16);
 }
-.invalid-feeback:empty{
+.invalid-feeback:empty {
 	display: none;
 }
-.invalid-feedback{
+.invalid-feedback {
 	font-size: smaller;
 	color: rgb(153, 16, 16);
 }
