@@ -48,7 +48,7 @@
 				<div class="card-body">
 					Your Password: <span class="text-gray">******</span>
 					<br>
-					Last Changed: <span class="text-gray">22-08-2020</span>
+					Last Changed: <span class="text-gray"><?= $current_user->password_updated_at?></span>
 				</div>
 			</div>
 
