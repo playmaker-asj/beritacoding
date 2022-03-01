@@ -87,4 +87,13 @@ class Article_model extends CI_Model
 		]
 	];
 }
+
+public function search($keyword)
+{
+	if (!$keyword) {
+		return null;
+	}
+	$this->db->like('title',$keyword);
+	
+}
 }
