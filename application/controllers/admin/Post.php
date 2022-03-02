@@ -14,13 +14,15 @@ class Post extends CI_Controller
 
 	public function index()
 	{
-		$data['current_user'] = $this->auth_model->current_user();
-		$data['articles'] = $this->article_model->get();
-		if(count($data['articles']) <= 0){
-			$this->load->view('admin/post_empty.php', $data);
-		} else {
-			$this->load->view('admin/post_list.php', $data);
-		}
+			$data['current_user']=$this->auth_model->current_user();
+
+			$this->load->library('pagination');
+
+			$config['base_url'] = site_url('/admin/post');
+			$config['page_query_string'] = TRUE;
+			$config['total_rows']= $this->article_model->count();
+			$config['per_page']=2;
+			
 	}
 
 	public function new()
@@ -94,5 +96,16 @@ class Post extends CI_Controller
 		$this->load->view('admin/post_edit_form.php', $data);
 	}
 
-	// ... ada kode lain di sini ...
+	public function delete($id = null)
+	{
+		if (!$id) {
+			show_404();
+		}
+
+		$deleted = $this->article_model->delete($id);
+		if ($deleted) {
+			$this->session->set_flashdata('message', 'Article was deleted');
+			redirect('admin/post');
+		}
+	}
 }
