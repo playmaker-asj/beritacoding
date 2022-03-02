@@ -14,17 +14,36 @@ class Post extends CI_Controller
 
 	public function index()
 	{
-			$data['current_user']=$this->auth_model->current_user();
-
-			$this->load->library('pagination');
-
-			$config['base_url'] = site_url('/admin/post');
-			$config['page_query_string'] = TRUE;
-			$config['total_rows']= $this->article_model->count();
-			$config['per_page']=2;
-			
+	  $data['current_user'] = $this->auth_model->current_user();
+	
+	  $this->load->library('pagination');
+	
+	  $config['base_url'] = site_url('/admin/post');
+	  $config['page_query_string'] = TRUE;
+	  $config['total_rows'] = $this->article_model->count();
+	  $config['per_page'] = 2;
+	
+	  $config['full_tag_open'] = '<div class="pagination">';
+	  $config['full_tag_close'] = '</div>';
+	
+	  $this->pagination->initialize($config);
+	  $limit = $config['per_page'];
+	  $offset = html_escape($this->input->get('per_page'));
+	
+	  $data['articles'] = $this->article_model->get($limit, $offset);
+	
+	  $data['keyword'] = $this->input->get('keyword');
+	
+	  if (!empty($this->input->get('keyword'))) {
+		$data['articles'] = $this->article_model->search($data['keyword']);
+	  }
+	
+	  if (count($data['articles']) <= 0 && !$this->input->get('keyword')) {
+		$this->load->view('admin/post_empty.php', $data);
+	  } else {
+		$this->load->view('admin/post_list.php', $data);
+	  }
 	}
-
 	public function new()
 	{
 		$data['current_user'] = $this->auth_model->current_user();
