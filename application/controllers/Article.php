@@ -9,18 +9,26 @@ class Article extends CI_Controller
 
     public function index()
     {
-        //ambil artikel yang statusnya bukan draft
-        $data['articles'] = $this->article_model->get_published();
-
-        if (count($data['articles'])>0) {
-            //kirim data artikel le view
+        $this->load->library('pagination');
+    
+        $config['base_url'] = site_url('/article');
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->article_model->get_published_count();
+        $config['per_page'] = 2;
+    
+        $this->pagination->initialize($config);
+        $limit = $config['per_page'];
+        $offset = html_escape($this->input->get('per_page'));
+    
+        $data['articles'] = $this->article_model->get_published($limit, $offset);
+    
+        if(count($data['articles']) > 0){
             $this->load->view('articles/list_article.php', $data);
-
-        }else {
-            // kalau gak ada artikel,tampilkan view ini
+        } else {
             $this->load->view('articles/empty_article.php');
         }
     }
+    
     public function show($slug = null)
     {
         //jika ga ada slug di url tampilkan 404
